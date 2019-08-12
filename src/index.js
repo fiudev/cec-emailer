@@ -3,9 +3,26 @@ const Parser = require("rss-parser");
 const mjml = require("mjml");
 const nodemailer = require("nodemailer");
 const moment = require("moment");
+const cron = require('node-cron');
 
 const email = process.env.MAIL_EMAIL;
 const password = process.env.MAIL_PASSWORD;
+
+// Cron Job
+cron.schedule('0 08 * * Monday', () => {
+  let shell = require('../child_helper');
+
+  let commandList = [
+    "npm start"
+  ]
+
+  shell.series(commandList, function(err){
+    console.log('Running Every Thursday at 1pm');
+  });
+}, {
+  scheduled: true,
+  timezone: "America/New_York"
+});
 
 const parser = new Parser({
   customFields: {
@@ -27,7 +44,8 @@ const CEC = {
   title: "College of Engineering",
   cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/07/1-update-CEC-Email-Newsletter-header-min.jpg",
   link: "https://cec.fiu.edu/",
-  calendar_url: "https://calendar.fiu.edu/department/cec/calendar/xml"
+  calendar_url: "https://calendar.fiu.edu/department/cec/calendar/xml",
+  date: moment().format('dddd, MMMM Do YYYY')
 };
 
 const Test = {
@@ -121,10 +139,15 @@ function formatHTML(events, calendar) {
   <mjml>
     <mj-body width="700px">
        
-        <mj-section>
+        <mj-section background-color='#fff'>
           <mj-column width="100%">
             <mj-image src=${calendar.cover} alt="header image" fluid-on-mobile="true" padding="0px"></mj-image>
           </mj-column>
+	</mj-section>
+	<mj-section background-color='#fff'>
+	  <mj-column>
+	    <mj-text align="center" font-size="21px" font-weight="500" color="#030303" padding="0 15px">${calendar.date}</mj-text>
+	  </mj-column>
         </mj-section>
 
         <mj-section background-color="#fafafa"> 
