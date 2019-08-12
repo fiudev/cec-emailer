@@ -3,6 +3,22 @@ const Parser = require("rss-parser");
 const mjml = require("mjml");
 const nodemailer = require("nodemailer");
 const moment = require("moment");
+const cron = require("node-cron");
+
+cron.schedule('0 09 * * Monday', () => {
+  let shell = require('../child_helper');
+
+  let commandList = [
+    "npm start"
+  ]
+
+  shell.series(commandList, function(err){
+    console.log('Running Every Monday at 9am');
+  });
+}, {
+  schedule: true,
+  timezone: "America/New_York"
+});
 
 const email = process.env.MAIL_EMAIL;
 const password = process.env.MAIL_PASSWORD;
@@ -25,9 +41,10 @@ const SCIS = {
 };
 const CEC = {
   title: "College of Engineering",
-  cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/07/1-update-CEC-Email-Newsletter-header-min.jpg",
+  cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/08/CEC-Newsletter-header.jpg",
   link: "https://cec.fiu.edu/",
-  calendar_url: "https://calendar.fiu.edu/department/cec/calendar/xml"
+  calendar_url: "https://calendar.fiu.edu/department/cec/calendar/xml",
+  date: moment().format('dddd, MMMM Do YYYY')
 };
 
 const Test = {
@@ -121,12 +138,16 @@ function formatHTML(events, calendar) {
   <mjml>
     <mj-body width="700px">
        
-        <mj-section>
+        <mj-section background-color="#fff">
           <mj-column width="100%">
             <mj-image src=${calendar.cover} alt="header image" fluid-on-mobile="true" padding="0px"></mj-image>
           </mj-column>
+        <!-- </mj-section> -->
+	<!-- <mj-section background-color="#fff"> -->
+          <mj-column>
+           <mj-text align="center" font-weight="500" font-size="20px" padding="0 20px">${calendar.date}</mj-text>
+          </mj-column>
         </mj-section>
-
         <mj-section background-color="#fafafa"> 
           <mj-column width="600px" background-color="#FFF">
             
