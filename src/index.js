@@ -9,11 +9,11 @@ const email = process.env.MAIL_EMAIL;
 const password = process.env.MAIL_PASSWORD;
 
 // Cron Job
-cron.schedule('30 23 * * Sunday', () => {
+cron.schedule('30 08 * * Mon', () => {
   let shell = require('../child_helper');
 
   let commandList = [
-    "npm start"
+    "node start"
   ]
 
   shell.series(commandList, function(err){
@@ -197,11 +197,11 @@ function formatHTML(events, calendar) {
             <mj-raw>
               <!-- right paragraph -->
             </mj-raw>
-            <mj-column>
-              <mj-text align="center" font-size="16px" font-weight="500" font-family="Helvetica Neue" color="#081D3F">
+            <mj-column padding="0px 0px" margin="0px 0px">
+              <mj-text align="center" padding="0px 0px" margin="0px 0px" font-size="16px" font-weight="500" font-family="Helvetica Neue" color="#081D3F">
                 <a href=${event.link}> ${event.title} </a>
               </mj-text>
-              <mj-spacer height="5px" />
+              <mj-spacer height="0px" />
             </mj-column>
             </mj-section>  
         `
