@@ -9,7 +9,7 @@ const email = process.env.MAIL_EMAIL;
 const password = process.env.MAIL_PASSWORD;
 
 // Cron Job
-cron.schedule('0 08 * * Monday', () => {
+cron.schedule('30 23 * * Sunday', () => {
   let shell = require('../child_helper');
 
   let commandList = [
@@ -17,12 +17,14 @@ cron.schedule('0 08 * * Monday', () => {
   ]
 
   shell.series(commandList, function(err){
-    console.log('Running Every Thursday at 1pm');
+    console.log('Running Every Monday at 8:30am');
   });
 }, {
   scheduled: true,
   timezone: "America/New_York"
 });
+
+console.log('What time is it now:' + moment().format('MMMM Do YYYY, h:mm:ss a'));
 
 const parser = new Parser({
   customFields: {
@@ -42,7 +44,7 @@ const SCIS = {
 };
 const CEC = {
   title: "College of Engineering",
-  cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/07/1-update-CEC-Email-Newsletter-header-min.jpg",
+  cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/08/cec-newsletter-header-08122019-update.jpg",
   link: "https://cec.fiu.edu/",
   calendar_url: "https://calendar.fiu.edu/department/cec/calendar/xml",
   date: moment().format('dddd, MMMM Do YYYY')
