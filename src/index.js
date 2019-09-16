@@ -189,7 +189,8 @@ function formatHTML(events, calendar) {
             <mj-text font-size="22px" font-weight="500" color="#fff" align="center">
                   Save the Date
               </mj-text>
-            </mj-section> 
+            </mj-section>
+	   <mj-raw> <ul> </mj-raw>
             ${events.after.map(
               event =>
                 `
@@ -199,13 +200,14 @@ function formatHTML(events, calendar) {
             </mj-raw>
             <mj-column padding="0px 0px" margin="0px 0px">
               <mj-text align="center" padding="0px 0px" margin="0px 0px" font-size="16px" font-weight="500" font-family="Helvetica Neue" color="#081D3F">
-                <a href=${event.link}> ${event.title} </a>
+             <li> <a href=${event.link}> ${event.title} </a></li>
               </mj-text>
               <mj-spacer height="0px" />
             </mj-column>
             </mj-section>  
         `
             )}
+	    <mj-raw> </ul> </mj-raw>
               <!-- Copy Right -->
               <mj-text font-size="14px" font-weight="200" color="#000" align="center">
               Copyright © 2019, FIU College of Engineering & Computing, All rights reserved.
