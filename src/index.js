@@ -9,22 +9,15 @@ const email = process.env.MAIL_EMAIL;
 const password = process.env.MAIL_PASSWORD;
 
 // Cron Job
-cron.schedule('30 08 * * Mon', () => {
-  let shell = require('../child_helper');
-
-  let commandList = [
-    "node start"
-  ]
-
-  shell.series(commandList, function(err){
-    console.log('Running Every Monday at 8:30am');
-  });
+cron.schedule('59 * * * *', () => {
+ console.log('Email sent out at: ' + moment().format('MMMM Do YYYY, h:mm:ss a')); 
+ main();
 }, {
   scheduled: true,
   timezone: "America/New_York"
 });
 
-console.log('What time is it now:' + moment().format('MMMM Do YYYY, h:mm:ss a'));
+console.log('This script started at: ' + moment().format('MMMM Do YYYY, h:mm:ss a' + '\n'));
 
 const parser = new Parser({
   customFields: {
@@ -246,7 +239,7 @@ async function mail(html) {
     if (error) {
       console.log(error);
     } else {
-      console.log("Server is ready to take our messages");
+      console.log("Server is able to messages\n");
     }
   });
 }
@@ -258,4 +251,4 @@ async function main() {
   await mail(html).catch(console.error);
 }
 
-main();
+
