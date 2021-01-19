@@ -9,7 +9,7 @@ const email = process.env.MAIL_EMAIL;
 const password = process.env.MAIL_PASSWORD;
 
 // Cron Job
-cron.schedule('59 * * * *', () => {
+cron.schedule('00 10 * * Monday', () => {
  console.log('Email sent out at: ' + moment().format('MMMM Do YYYY, h:mm:ss a')); 
  main();
 }, {
@@ -17,7 +17,9 @@ cron.schedule('59 * * * *', () => {
   timezone: "America/New_York"
 });
 
-console.log('This script started at: ' + moment().format('MMMM Do YYYY, h:mm:ss a' + '\n'));
+console.log('This script started at: ' + moment().format('MMMM Do YYYY, h:mm:ss a') + '\n');
+console.log('Emails will be sent out every Monday at 11 AM\n');
+
 
 const parser = new Parser({
   customFields: {
@@ -37,7 +39,7 @@ const SCIS = {
 };
 const CEC = {
   title: "College of Engineering",
-  cover: "https://www.cis.fiu.edu/wp-content/uploads/2019/08/cec-newsletter-header-08122019-update.jpg",
+  cover: "https://www.cis.fiu.edu/wp-content/uploads/2020/11/CEC-Banner-1.png",
   link: "https://cec.fiu.edu/",
   calendar_url: "https://calendar.fiu.edu/department/cec/calendar/xml",
   date: moment().format('dddd, MMMM Do YYYY')
@@ -51,6 +53,7 @@ const Test = {
 };
 
 const calendar = CEC;
+console.log('Initial calendar date: ' + calendar.date);
 
 /**
  *
@@ -207,7 +210,7 @@ function formatHTML(events, calendar) {
 	    </mj-raw>
               <!-- Copy Right -->
               <mj-text font-size="14px" font-weight="200" color="#000" align="center">
-              Copyright © 2019, FIU College of Engineering & Computing, All rights reserved.
+              Copyright © 2021, FIU College of Engineering & Computing, All rights reserved.
               </mj-text>
             <mj-column>
     </mj-body>
@@ -231,22 +234,20 @@ async function mail(html) {
   await transporter.sendMail({
     from: email,
     to: process.env.TO_EMAIL,
-    subject: "FIUCEC Events Newsletter",
+    subject: "FIU CEC Events Newsletter",
     html
   });
 
   transporter.verify(function (error, success) {
     if (error) {
       console.log(error);
-    } else {
-      console.log("Server is able to messages\n");
-    }
+    } 
   });
 }
 
 async function main() {
+  calendar.date = moment().format('dddd, MMMM Do YYYY');
   const events = await parseURL(calendar).catch(console.error);
-
   const html = formatHTML(events, calendar);
   await mail(html).catch(console.error);
 }
